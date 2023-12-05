@@ -53,10 +53,15 @@ export async function updateTicket(req, res) {
     if (Object.keys(req.body).length === 0)
       throw new Error("Body cannot be empty");
 
-    const ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const tag = req.body.tag.split(", ");
+    const ticket = await Ticket.findByIdAndUpdate(
+      req.params.id,
+      { ...req.body, tag },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     res.status(200).json({
       status: "success",
